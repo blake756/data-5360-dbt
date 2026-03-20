@@ -1,9 +1,9 @@
 {{ config(
     materialized = 'table',
-    schema = 'oliver_dw_source'
+    schema = 'dw_oliver'
     )
 }}
-
+ 
 
 select
     employee_id as employee_key,
