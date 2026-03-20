@@ -1,12 +1,12 @@
 {{ config(
     materialized = 'table',
-    schema = 'oliver_dw_source'
+    schema = 'dw_oliver'
 ) }}
 
 SELECT
     c.customer_key,
     e.employee_key,
-    p.product_key,
+    p.product_key, 
     s.store_key,
     d.date_key,
     ol.quantity,

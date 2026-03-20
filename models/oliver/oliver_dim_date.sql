@@ -9,4 +9,4 @@ select distinct
     extract(year from order_date) as year,
     extract(month from order_date) as month,
     extract(day from order_date) as day
-from {{ source('oliver','orders') }}
+from {{ source('oliver','orders') }} 
