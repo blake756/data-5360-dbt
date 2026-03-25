@@ -7,7 +7,7 @@ models:
     description: "Insurance Customer Dimension"
   - name: dim_date
     description: "Insurance Date Dimension"
-  - name: fact_claim
+  - name: fact_claim  #:)
     description: "Insurance Claim Fact"
   - name: stg_customer_service_interactions
     description: |
