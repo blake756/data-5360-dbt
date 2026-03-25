@@ -10,3 +10,5 @@ policyid as policy_key,
 policyid,
 policytype
 FROM {{ source('insurance_landing', 'policies') }}
+
+
