@@ -1,3 +1,10 @@
+{{ config(
+    materialized = 'table',
+    schema = 'DW_ECOESSENTIALS'
+    )
+}}
+
+
 select
     {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as customer_key,
     customer_id,
@@ -7,4 +14,4 @@ select
     city,
     state,
     zip_code
-from {{ ref('stg_customer') }}
+from {{ ref('stg_customer') }}  

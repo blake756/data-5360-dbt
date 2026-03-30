@@ -4,4 +4,4 @@ select distinct
     subscriber_first_name,
     subscriber_last_name
 from {{ ref('stg_marketingemails') }}
-where subscriber_id is not null
+where subscriber_id is not null 

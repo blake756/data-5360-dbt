@@ -4,4 +4,4 @@ select
     product_name,
     product_type,
     price
-from {{ ref('stg_product') }}
+from {{ ref('stg_product') }} 

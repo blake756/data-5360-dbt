@@ -1,3 +1,9 @@
+{{ config(
+    materialized = 'table',
+    schema = 'DW_ECOESSENTIALS'
+    )
+}}
+
 with order_campaigns as (
 
     select distinct
@@ -5,7 +11,7 @@ with order_campaigns as (
         cast(campaign_id as varchar) as campaign_name,
         discount as campaign_discount,
         'online' as campaign_type
-    from {{ ref('stg_order_line') }}
+    from {{ ref('stg_orderline') }}
     where campaign_id is not null
 
 ),
@@ -16,7 +22,7 @@ email_campaigns as (
         campaign_id,
         cast(campaign_name as varchar) as campaign_name,
         null as campaign_discount,
-        'email' as campaign_type
+        'email' as campaign_type 
     from {{ ref('stg_marketingemails') }}
     where campaign_id is not null
 

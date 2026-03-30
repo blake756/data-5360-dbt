@@ -12,4 +12,4 @@ select
     nullif(SUBSCRIBERFIRSTNAME, 'NULL') as subscriber_first_name,
     try_to_number(replace(SUBSCRIBERID, 'NULL', '')) as subscriber_id,
     nullif(SUBSCRIBERLASTNAME, 'NULL') as subscriber_last_name
-from BLAKEHOBBS.DW_ECOESSENTIALS_ECOESSENTIALS_TRANSACTIONAL_DB.MARKETINGEMAILS
+from BLAKEHOBBS.DW_ECOESSENTIALS.MARKETINGEMAILS 
