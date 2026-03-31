@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: oliver_dim_customer
+    description: "Customer Dimension"
+  - name: oliver_dim_date
+    description: "Date Dimension"
+    columns: 
+      - name: date_day
+        tests:
+        - unique
+        - not_null
+  - name: oliver_dim_employee
+    description: "Employee Dimension"
+  - name: oliver_dim_product
+    description: "Product Dimension"
+    columns:
+      - name: product_name
+        tests:
+          - accepted_values:
+              values: ['Marshmallows', 'Small Popcorn', 'Gummy Bears', 'Small Coffee', 'Chocolate Bar']
+              quote: true
+  - name: oliver_dim_store
+    description: "Store Dimension"
+  - name: oliver_fact_certification
+    description: "Certification Fact Table"
+  - name: oliver_fact_sales
+    description: "Sales Fact Table"
+    columns: 
+      - name: customer_key
+        tests:
+          - relationships:
+              to: ref('oliver_dim_customer')
+              field: customer_key
+
+
+
+
+
+
+
+
+
