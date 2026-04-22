@@ -1,3 +1,9 @@
+{{ config(
+    materialized = 'table',
+    schema = 'DW_ECOESSENTIALS'
+    )
+}}
+
 select
     try_to_number(replace(CAMPAIGNID, 'NULL', '')) as campaign_id,
     CAMPAIGNNAME as campaign_name,
@@ -7,7 +13,6 @@ select
     EMAILNAME as email_name,
     EVENTTIMESTAMP as event_timestamp,
     EVENTTYPE as event_type,
-    SENDTIMESTAMP as send_timestamp,
     SUBSCRIBEREMAIL as subscriber_email,
     nullif(SUBSCRIBERFIRSTNAME, 'NULL') as subscriber_first_name,
     try_to_number(replace(SUBSCRIBERID, 'NULL', '')) as subscriber_id,
