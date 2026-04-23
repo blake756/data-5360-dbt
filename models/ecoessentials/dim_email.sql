@@ -1,7 +1,12 @@
+{{ config(
+    materialized = 'table',
+    schema = 'DW_ECOESSENTIALS'
+) }}
+
 select distinct
     {{ dbt_utils.generate_surrogate_key(['email_id']) }} as email_key,
     email_id,
-    subscriber_email as email_address,
-    send_timestamp
+    'marketing_email' as email_name
+
 from {{ ref('stg_marketingemails') }}
-where email_id is not null 
+where email_id is not null

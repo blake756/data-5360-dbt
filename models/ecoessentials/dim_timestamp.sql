@@ -4,8 +4,8 @@
 ) }}
 
 select distinct
-    {{ dbt_utils.generate_surrogate_key(['event_type']) }} as event_key,
-    event_type
+    {{ dbt_utils.generate_surrogate_key(['send_timestamp']) }} as timestamp_key,
+    send_timestamp
 
 from {{ ref('stg_marketingemails') }}
-where event_type is not null
+where send_timestamp is not null
