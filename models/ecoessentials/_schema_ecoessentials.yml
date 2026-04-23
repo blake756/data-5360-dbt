@@ -1,0 +1,82 @@
+version: 2
+
+sources:
+  - name: dw_ecoessentials
+    database: BLAKEHOBBS
+    schema: RAW_ECOESSENTIALS_PG_ECOESSENTIALS_TRANSACTIONAL_DB
+    tables:
+      - name: MARKETINGEMAILS
+
+models:
+  - name: dim_customer
+    columns:
+      - name: customer_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_date
+    columns:
+      - name: date_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_email
+    columns:
+      - name: email_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_product
+    columns:
+      - name: product_key
+        tests:
+          - unique
+          - not_null
+      - name: product_type
+        tests:
+          - not_null
+
+  - name: dim_subscriber
+    columns:
+      - name: subscriber_key
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_campaign
+    columns:
+      - name: campaign_key
+        tests:
+          - unique
+          - not_null
+
+  - name: fact_marketing_email
+    columns:
+      - name: marketing_email_event_key
+        tests:
+          - unique
+          - not_null
+      - name: event_type
+        tests:
+          - accepted_values:
+              values: ['sent', 'open', 'click', 'bounce', 'unsubscribe']
+      - name: customer_key
+        tests:
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_key
+
+  - name: fact_online_sales
+    columns:
+      - name: online_fact_key
+        tests:
+          - unique
+          - not_null
+      - name: product_key
+        tests:
+          - relationships:
+              to: ref('dim_product')
+              field: product_key
