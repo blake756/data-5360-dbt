@@ -1,13 +1,12 @@
 {{ config(
     materialized = 'table',
     schema = 'DW_ECOESSENTIALS'
-    )
-}}
-
-{{ config(materialized='table', schema='DW_ECOESSENTIALS') }}
+) }}
 
 select
-    {{ dbt_utils.generate_surrogate_key(['email_event_id']) }} as marketing_email_event_key,
+    {{ dbt_utils.generate_surrogate_key([
+        'nullif(sme.email_event_id::string, \'NULL\')'
+    ]) }} as marketing_email_event_key,
 
     dd.date_key,
     dt.timestamp_key,
@@ -19,16 +18,22 @@ select
     sme.email_event_id
 
 from {{ ref('stg_marketingemails') }} sme
+
 left join {{ ref('dim_date') }} dd
-    on cast(sme.event_timestamp as date) = dd.full_date
+    on cast(nullif(sme.event_timestamp::string, 'NULL') as date) = dd.full_date
+
 left join {{ ref('dim_timestamp') }} dt
-    on sme.send_timestamp = dt.send_timestamp
+    on nullif(sme.event_timestamp::string, 'NULL') = dt.event_timestamp
+
 left join {{ ref('dim_user') }} du
-    on sme.customer_id = du.customer_id
+    on nullif(sme.customer_id::string, 'NULL') = du.customer_id::string
+
 left join {{ ref('dim_campaign') }} dcamp
-    on sme.campaign_id = dcamp.campaign_id
+    on nullif(sme.campaign_id::string, 'NULL') = dcamp.campaign_id
     and dcamp.campaign_type = 'email'
+
 left join {{ ref('dim_event') }} de
-    on sme.event_type = de.event_type
+    on nullif(sme.event_type::string, 'NULL') = de.event_type
+
 left join {{ ref('dim_email') }} de2
-    on sme.email_id = de2.email_id
+    on nullif(sme.email_id::string, 'NULL') = de2.email_id

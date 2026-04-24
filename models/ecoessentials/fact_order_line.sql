@@ -1,7 +1,7 @@
 {{ config(materialized='table', schema='DW_ECOESSENTIALS') }}
 
 select
-    {{ dbt_utils.generate_surrogate_key(['order_id','product_id']) }} as order_line_key,
+    {{ dbt_utils.generate_surrogate_key(['ol.order_id','ol.product_id']) }} as order_line_key,
 
     dd.date_key,
     du.user_key,
@@ -32,5 +32,5 @@ left join {{ ref('dim_product') }} dp
 left join {{ ref('dim_campaign') }} dcamp
     on ol.campaign_id = dcamp.campaign_id
     and dcamp.campaign_type = 'online'
-from BLAKEHOBBS.RAW_ECOESSENTIALS_PG_ECOESSENTIALS_TRANSACTIONAL_DB.ORDER_LINE
+
 

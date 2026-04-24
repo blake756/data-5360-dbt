@@ -1,16 +1,19 @@
 {{ config(materialized='table', schema='DW_ECOESSENTIALS') }}
 
 select
-    {{ dbt_utils.generate_surrogate_key(['customer_id']) }} as user_key,
-    
-    customer_id,
-    subscriber_id,
+    {{ dbt_utils.generate_surrogate_key(['c.customer_id']) }} as user_key,
 
-    first_name,
-    last_name,
-    email,
-    city,
-    state,
-    zip_code
+    c.customer_id,
+    me.subscriber_id,
+    c.first_name,
+    c.last_name,
+    c.email,
+    c.city,
+    c.state,
+    c.zip_code
 
-from {{ ref('stg_customer') }}
+from {{ ref('stg_customer') }} c
+
+left join {{ ref('stg_marketingemails') }} me
+    on nullif(lower(c.customer_id::string), 'null')
+     = nullif(lower(me.customer_id::string), 'null')

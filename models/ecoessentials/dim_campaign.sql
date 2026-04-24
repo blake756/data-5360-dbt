@@ -20,9 +20,9 @@ email_campaigns as (
 
     select distinct
         campaign_id,
-        cast(campaign_name as varchar) as campaign_name,
+        cast(campaign_id as varchar) as campaign_name,
         null as campaign_discount,
-        'email' as campaign_type
+        'email' as campaign_type 
     from {{ ref('stg_marketingemails') }}
     where campaign_id is not null
 
@@ -31,7 +31,7 @@ email_campaigns as (
 combined as (
 
     select * from order_campaigns
-    union
+    union all
     select * from email_campaigns
 
 )

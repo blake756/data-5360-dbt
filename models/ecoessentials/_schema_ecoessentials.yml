@@ -8,9 +8,14 @@ sources:
       - name: MARKETINGEMAILS
 
 models:
-  - name: dim_customer
+
+  # ======================
+  # DIMENSIONS
+  # ======================
+
+  - name: dim_user
     columns:
-      - name: customer_key
+      - name: user_key
         tests:
           - unique
           - not_null
@@ -22,12 +27,30 @@ models:
           - unique
           - not_null
 
+  - name: dim_timestamp
+    columns:
+      - name: timestamp_key
+        tests:
+          - unique
+          - not_null
+
   - name: dim_email
     columns:
       - name: email_key
         tests:
           - unique
           - not_null
+
+  - name: dim_event
+    columns:
+      - name: event_key
+        tests:
+          - unique
+          - not_null
+      - name: event_type
+        tests:
+          - accepted_values:
+              values: ['sent', 'open', 'click', 'bounce', 'unsubscribe']
 
   - name: dim_product
     columns:
@@ -39,13 +62,6 @@ models:
         tests:
           - not_null
 
-  - name: dim_subscriber
-    columns:
-      - name: subscriber_key
-        tests:
-          - unique
-          - not_null
-
   - name: dim_campaign
     columns:
       - name: campaign_key
@@ -53,30 +69,63 @@ models:
           - unique
           - not_null
 
-  - name: fact_marketing_email
+  # ======================
+  # FACT TABLES
+  # ======================
+
+  - name: fact_marketing_email_events
     columns:
       - name: marketing_email_event_key
         tests:
           - unique
           - not_null
-      - name: event_type
-        tests:
-          - accepted_values:
-              values: ['sent', 'open', 'click', 'bounce', 'unsubscribe']
-      - name: customer_key
+
+      - name: user_key
         tests:
           - relationships:
-              to: ref('dim_customer')
-              field: customer_key
+              to: ref('dim_user')
+              field: user_key
 
-  - name: fact_online_sales
+      - name: event_key
+        tests:
+          - relationships:
+              to: ref('dim_event')
+              field: event_key
+
+      - name: email_key
+        tests:
+          - relationships:
+              to: ref('dim_email')
+              field: email_key
+
+      - name: campaign_key
+        tests:
+          - relationships:
+              to: ref('dim_campaign')
+              field: campaign_key
+
+  - name: fact_order_line
     columns:
-      - name: online_fact_key
+      - name: order_line_key
         tests:
           - unique
           - not_null
+
       - name: product_key
         tests:
           - relationships:
               to: ref('dim_product')
               field: product_key
+
+      - name: user_key
+        tests:
+          - relationships:
+              to: ref('dim_user')
+              field: user_key
+
+      - name: campaign_key
+        tests:
+          - relationships:
+              to: ref('dim_campaign')
+              field: campaign_key
+              
