@@ -1,20 +1,11 @@
-{{ config(
-    materialized = 'table',
-    schema = 'DW_ECOESSENTIALS'
-    )
-}}
+{{ config(materialized='view') }}
 
 select
-    try_to_number(replace(CAMPAIGNID, 'NULL', '')) as campaign_id,
-    CAMPAIGNNAME as campaign_name,
-    try_to_number(replace(CUSTOMERID, 'NULL', '')) as customer_id,
-    try_to_number(replace(EMAILEVENTID, 'NULL', '')) as email_event_id,
-    try_to_number(replace(EMAILID, 'NULL', '')) as email_id,
-    EMAILNAME as email_name,
-    EVENTTIMESTAMP as event_timestamp,
+    EMAILEVENTID as email_event_id,
+    CUSTOMERID as customer_id,
+    SUBSCRIBERID as subscriber_id,
+    EMAILID as email_id,
+    CAMPAIGNID as campaign_id,
     EVENTTYPE as event_type,
-    SUBSCRIBEREMAIL as subscriber_email,
-    nullif(SUBSCRIBERFIRSTNAME, 'NULL') as subscriber_first_name,
-    try_to_number(replace(SUBSCRIBERID, 'NULL', '')) as subscriber_id,
-    nullif(SUBSCRIBERLASTNAME, 'NULL') as subscriber_last_name
-from BLAKEHOBBS.DW_ECOESSENTIALS.MARKETINGEMAILS 
+    EVENTTIMESTAMP as event_timestamp
+from BLAKEHOBBS.DW_DELIVERABLE2EMAILS.MARKETINGEMAILS
